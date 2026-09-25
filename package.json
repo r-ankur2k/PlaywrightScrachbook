@@ -1,0 +1,106 @@
+{
+  "name": "playwright-debug-block",
+  "displayName": "Playwright Debug Block",
+  "publisher": "playwright-debug",
+  "description": "Execute tagged Playwright code blocks against an existing Chrome session",
+  "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ankur/playwright-debug-block"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Debuggers"
+  ],
+  "activationEvents": [
+    "onView:playwright-debug-blocks-view",
+    "onCommand:playwright-debug.debugBlock",
+    "onCommand:playwright-debug.refreshTree",
+    "onCommand:playwright-debug.openBlock",
+    "onCommand:playwright-debug.launchChrome",
+    "onLanguage:typescript",
+    "onLanguage:javascript",
+    "onLanguage:typescriptreact",
+    "onLanguage:javascriptreact"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "playwright-debug-sidebar",
+          "title": "Playwright Scrachbook",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "playwright-debug-sidebar": [
+        {
+          "id": "playwright-debug-blocks-view",
+          "name": "Debug Blocks"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "playwright-debug.debugBlock",
+        "title": "Playwright: Debug Block",
+        "icon": "$(play)"
+      },
+      {
+        "command": "playwright-debug.refreshTree",
+        "title": "Refresh Debug Blocks",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "playwright-debug.openBlock",
+        "title": "Go to Debug Block"
+      },
+      {
+        "command": "playwright-debug.launchChrome",
+        "title": "Playwright: Launch Chrome (Debug Mode)",
+        "icon": "$(globe)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "playwright-debug.launchChrome",
+          "when": "view == playwright-debug-blocks-view",
+          "group": "navigation@1"
+        },
+        {
+          "command": "playwright-debug.refreshTree",
+          "when": "view == playwright-debug-blocks-view",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "playwright-debug.debugBlock",
+          "when": "view == playwright-debug-blocks-view",
+          "group": "inline"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.2",
+    "@types/vscode": "^1.85.0"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0",
+    "playwright-core": "^1.63.0",
+    "typescript": "^5.3.0"
+  }
+}
