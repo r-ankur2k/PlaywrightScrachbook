@@ -1,7 +1,7 @@
 {
   "name": "playwright-debug-block",
   "displayName": "Playwright Debug Block",
-  "publisher": "Ankur Raj",
+  "publisher": "playwright-debug",
   "icon": "media/PlaywrightScrachbookIcon.png",
   "description": "Execute tagged Playwright code blocks against an existing Chrome session",
   "version": "0.0.1",
