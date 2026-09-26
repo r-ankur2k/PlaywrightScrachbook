@@ -1,3 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-  <path d="M8 1a5 5 0 0 0-5 5v1H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h1v1a5 5 0 0 0 10 0v-1h1a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-1V6a5 5 0 0 0-5-5zm3 6V6a3 3 0 0 0-6 0v1h6zM4 9h8v3a4 4 0 0 1-8 0V9z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1e2e"/>
+      <stop offset="100%" stop-color="#0f0f17"/>
+    </linearGradient>
+    <linearGradient id="playGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Rounded Background Container -->
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bgGrad)" stroke="#313244" stroke-width="2" filter="url(#shadow)"/>
+
+  <!-- Code Bracket Outer Shield Accent -->
+  <path d="M 38 40 L 26 64 L 38 88" fill="none" stroke="url(#accentGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+  <path d="M 90 40 L 102 64 L 90 88" fill="none" stroke="url(#accentGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+
+  <!-- Play / Debug Action Button -->
+  <path d="M 52 42 L 86 64 L 52 86 Z" fill="url(#playGrad)" stroke="#15803d" stroke-width="2" stroke-linejoin="round" filter="url(#shadow)"/>
+
+  <!-- Pulse / Debug Dot Indicator -->
+  <circle cx="94" cy="34" r="7" fill="#ef4444"/>
+  <circle cx="94" cy="34" r="11" fill="none" stroke="#ef4444" stroke-width="2" opacity="0.6"/>
 </svg>

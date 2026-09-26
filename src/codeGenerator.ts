@@ -28,8 +28,8 @@ export function generateExecutableCode(block: DebugBlock): CodeGeneratorResult {
   const statementsText = block.statements.map(s => s.getText()).join('\n  ');
 
   // Format fixture destructuring
-  const fixtureParam =
-    block.requiredFixtures.length > 0 ? `{ ${block.requiredFixtures.join(', ')} }` : '{}';
+  const fixtures = block.requiredFixtures && block.requiredFixtures.length > 0 ? block.requiredFixtures : ['page'];
+  const fixtureParam = `{ ${fixtures.join(', ')} }`;
 
   // Construct TypeScript source text
   const tsCode = `

@@ -2,6 +2,7 @@
   "name": "playwright-debug-block",
   "displayName": "Playwright Debug Block",
   "publisher": "playwright-debug",
+  "icon": "media/PlaywrightScrachbookIcon.png",
   "description": "Execute tagged Playwright code blocks against an existing Chrome session",
   "version": "0.0.1",
   "license": "MIT",
@@ -86,6 +87,21 @@
           "group": "inline"
         }
       ]
+    },
+    "configuration": {
+      "title": "Playwright Debug Block",
+      "properties": {
+        "playwrightDebug.isolatedContext": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, creates a fresh isolated browser context with clean cookies and storage for each debug block execution. When disabled (default), executes against the existing active tab in Chrome."
+        },
+        "playwrightDebug.cdpEndpoint": {
+          "type": "string",
+          "default": "http://localhost:9222",
+          "description": "Chrome CDP endpoint URL for remote debugging."
+        }
+      }
     }
   },
   "scripts": {

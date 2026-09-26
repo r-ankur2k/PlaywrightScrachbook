@@ -178,7 +178,9 @@ export async function getFixtureBindings(
 
   const bindings: Record<string, any> = {};
 
-  for (const fixture of required) {
+  const effectiveRequired = required && required.length > 0 ? required : ['page'];
+
+  for (const fixture of effectiveRequired) {
     switch (fixture) {
       case 'browser':
         bindings.browser = browser;

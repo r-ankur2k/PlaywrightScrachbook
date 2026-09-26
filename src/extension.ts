@@ -283,11 +283,12 @@ export function activate(context: vscode.ExtensionContext) {
 
         outputChannel.clear();
         outputChannel.show(true);
+        const targetFixtures = targetBlock.requiredFixtures.length > 0 ? targetBlock.requiredFixtures : ['page'];
         outputChannel.appendLine(
           `[PW-DEBUG] Target block: "${targetBlock.name}" in ${targetBlock.filePath}`
         );
         outputChannel.appendLine(
-          `[PW-DEBUG] Required fixtures: [${targetBlock.requiredFixtures.join(', ')}]`
+          `[PW-DEBUG] Required fixtures: [${targetFixtures.join(', ')}]`
         );
 
         // 2. Generate executable JS code
@@ -323,7 +324,7 @@ export function activate(context: vscode.ExtensionContext) {
             // 4. Get live fixture bindings from Chrome CDP
             outputChannel.appendLine(`[PW-DEBUG] Connecting to Chrome CDP at http://localhost:9222...`);
             const bindings = await getFixtureBindings(
-              targetBlock!.requiredFixtures,
+              targetFixtures,
               'http://localhost:9222',
               targetBlock!.filePath
             );

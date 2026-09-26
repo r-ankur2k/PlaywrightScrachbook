@@ -384,7 +384,13 @@ function resolveDependencies(
     }
 
     if (ts.isParameter(decl) || ts.isBindingElement(decl)) {
-      if (!PLAYWRIGHT_FIXTURES.includes(name as any)) {
+      if ((PLAYWRIGHT_FIXTURES as readonly string[]).includes(name)) {
+        deps.push({
+          name,
+          declaration: decl,
+          sourceFile: decl.getSourceFile(),
+        });
+      } else {
         const fixtureRes = resolveCustomFixture(name, decl, checker, sourceFile, program);
         if (fixtureRes) {
           deps.push({
@@ -538,7 +544,11 @@ export function analyzeDebugBlocks(filePath: string, sourceText: string): DebugB
   };
 
   const program = ts.createProgram([filePath], compilerOptions, host);
-  const sourceFile = program.getSourceFile(filePath);
+  let sourceFile = program.getSourceFile(filePath);
+  if (!sourceFile) {
+    const targetNorm = normalizePath(filePath);
+    sourceFile = program.getSourceFiles().find(sf => normalizePath(sf.fileName) === targetNorm);
+  }
   if (!sourceFile) return [];
 
   const checker = program.getTypeChecker();
@@ -573,11 +583,13 @@ export function analyzeDebugBlocks(filePath: string, sourceText: string): DebugB
       (a, b) => a.declaration.getStart(a.sourceFile) - b.declaration.getStart(b.sourceFile),
     );
 
-    const dependencies: ResolvedDependency[] = uniqueDeps.map(d => ({
-      text: d.isSynthetic ? d.syntheticText! : d.declaration.getText(d.sourceFile),
-      possibleSideEffect: d.isSynthetic ? false : hasSideEffects(d.declaration),
-      declaredInFile: d.sourceFile.fileName,
-    }));
+    const dependencies: ResolvedDependency[] = uniqueDeps
+      .filter(d => !(PLAYWRIGHT_FIXTURES as readonly string[]).includes(d.name))
+      .map(d => ({
+        text: d.isSynthetic ? d.syntheticText! : d.declaration.getText(d.sourceFile),
+        possibleSideEffect: d.isSynthetic ? false : hasSideEffects(d.declaration),
+        declaredInFile: d.sourceFile.fileName,
+      }));
 
     // Check if any synthetic dependency needs class import
     for (const d of uniqueDeps) {
@@ -597,15 +609,21 @@ export function analyzeDebugBlocks(filePath: string, sourceText: string): DebugB
       ...rawDeps.flatMap(d => {
         if (d.isSynthetic) return ['page'];
         const innerDeclared = collectDeclaredNames([d.declaration]);
-        return [...collectFreeIdentifiers([d.declaration], innerDeclared)];
+        return [d.name, ...collectFreeIdentifiers([d.declaration], innerDeclared)];
       }),
     ]);
 
     let requiredFixtures = allFixturesInScope.filter(f => allReferencedNames.has(f));
 
-    // If synthetic custom fixture was used (e.g. const loginPage = new LoginPage(page)), ensure 'page' is in requiredFixtures
-    if (uniqueDeps.some(d => d.isSynthetic) && !requiredFixtures.includes('page')) {
-      requiredFixtures.push('page');
+    if (
+      allReferencedNames.has('page') ||
+      allFixturesInScope.includes('page') ||
+      uniqueDeps.some(d => d.isSynthetic || d.name === 'page') ||
+      requiredFixtures.length === 0
+    ) {
+      if (!requiredFixtures.includes('page')) {
+        requiredFixtures.unshift('page');
+      }
     }
 
     blocks.push({
@@ -628,5 +646,6 @@ export function getBlockAtLine(blocks: DebugBlock[], line: number): DebugBlock |
 }
 
 function normalizePath(p: string): string {
-  return p.replace(/\\/g, '/');
+  const norm = p.replace(/\\/g, '/');
+  return process.platform === 'win32' ? norm.toLowerCase() : norm;
 }
