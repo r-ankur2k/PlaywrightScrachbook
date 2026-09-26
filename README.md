@@ -27,6 +27,17 @@
 
 ---
 
+## 📦 Installation (from GitHub Release)
+
+1. Download the latest `.vsix` file from the [GitHub Releases](https://github.com/r-ankur2k/PlaywrightScrachbook/releases) page.
+2. Open VS Code.
+3. Go to the **Extensions** view (`Ctrl+Shift+X` on Windows/Linux or `Cmd+Shift+X` on macOS).
+4. Click the **`...`** (Views and More Actions) menu in the top-right corner of the Extensions panel.
+5. Select **Install from VSIX...**
+6. Select the downloaded `.vsix` file and click **Install**.
+
+---
+
 ## ✨ Key Features
 
 - **⚡ Instant Execution**: Run isolated code blocks in milliseconds without launching new browser instances or re-authenticating.

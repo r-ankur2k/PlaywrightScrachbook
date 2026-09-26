@@ -1,5 +1,3 @@
 out/
 node_modules/
 *.vsix
-!Extension releases/
-!Extension releases/*.vsix
